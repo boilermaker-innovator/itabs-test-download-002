@@ -1,1 +1,402 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude 4.5: Top Coding Model</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --c: #f59e0b;
+            --bg: #0f172a;
+            --card: #1e293b;
+            --txt: #f1f5f9;
+            --txt2: #94a3b8;
+            --bdr: #334155;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--txt);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            border-bottom: 1px solid var(--bdr);
+            margin-bottom: 30px;
+        }
+        
+        .brand {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--c);
+            margin-bottom: 15px;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .sub {
+            color: var(--txt2);
+        }
+        
+        .badge {
+            display: inline-block;
+            background: var(--card);
+            border: 1px solid var(--c);
+            color: var(--c);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-top: 15px;
+        }
+        
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            background: var(--card);
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .itab-section {
+            background: var(--card);
+            border-radius: 12px;
+            margin-bottom: 16px;
+            border: 1px solid var(--bdr);
+            overflow: hidden;
+        }
+        
+        .itab-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .itab-header:hover {
+            background: #334155;
+        }
+        
+        .itab-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .itab-num {
+            width: 36px;
+            height: 36px;
+            background: var(--c);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: #fff;
+            flex-shrink: 0;
+        }
+        
+        .itab-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        .itab-badge {
+            font-size: 0.7rem;
+            padding: 4px 10px;
+            border-radius: 20px;
+            background: #334155;
+            color: var(--txt2);
+            text-transform: uppercase;
+        }
+        
+        .timestamp-btn {
+            font-size: 0.75rem;
+            padding: 4px 12px;
+            border-radius: 4px;
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--c);
+            font-family: monospace;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+            cursor: pointer;
+        }
+        
+        .timestamp-btn:hover {
+            background: rgba(245, 158, 11, 0.4);
+            border-color: var(--c);
+        }
+        
+        .timestamp-badge {
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            border-radius: 4px;
+            background: #334155;
+            color: var(--txt2);
+            font-family: monospace;
+        }
+        
+        .i-btn {
+            width: 32px;
+            height: 32px;
+            background: var(--c);
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: serif;
+            font-style: italic;
+            flex-shrink: 0;
+            transition: background 0.2s;
+        }
+        
+        .i-btn.active {
+            background: #10b981;
+        }
+        
+        .itab-content {
+            display: none;
+            padding: 20px;
+            border-top: 1px solid var(--bdr);
+        }
+        
+        .itab-content.show {
+            display: block;
+        }
+        
+        .itab-content p {
+            color: var(--txt2);
+            margin-bottom: 15px;
+        }
+        
+        .key-point {
+            background: var(--bg);
+            border-left: 4px solid var(--c);
+            padding: 15px 20px;
+            margin-top: 15px;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .kp-label {
+            color: var(--c);
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-bottom: 5px;
+        }
+        
+        .key-point p {
+            color: var(--txt);
+            margin: 0;
+        }
+        
+        .support {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .support h3 {
+            color: var(--c);
+            margin-bottom: 10px;
+        }
+        
+        .support a {
+            display: inline-block;
+            background: var(--c);
+            color: #fff;
+            padding: 12px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 15px;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 30px;
+            border-top: 1px solid var(--bdr);
+            margin-top: 30px;
+            color: var(--txt2);
+            font-size: 0.85rem;
+        }
+        
+        footer a {
+            color: var(--c);
+            text-decoration: none;
+        }
+        
+        @media (max-width: 600px) {
+            .itab-title {
+                gap: 10px;
+            }
+            .itab-name {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="brand">Claude 4.5: Top Coding Model</div>
+            <h1>Your Guide</h1>
+            <p class="sub">Tap any section to learn more</p>
+            
+        </header>
+        
+        
+                <div class="video-container">
+                    <iframe id="ytPlayer" src="https://www.youtube-nocookie.com/embed/8_wzjlWBcM4?rel=0&modestbranding=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </div>
+        
+        
+                <div class="itab-section">
+                    <div class="itab-header" onclick="toggle(this)">
+                        <div class="itab-title">
+                            <span class="itab-num">1</span>
+                            <span class="itab-name">Claude 4.5: Top Coding Model</span>
+                            <span class="itab-badge">Key Fact</span>
+                            <button class="timestamp-btn" onclick="event.stopPropagation(); jumpToTime(3)">▶ 00:00:03</button>
+                        </div>
+                        <button class="i-btn">i</button>
+                    </div>
+                    <div class="itab-content">
+                        <p>Claude Sonnet 4.5 is considered the best coding model available right now. It excels at handling tasks autonomously for extended periods, up to 30 hours, making it ideal for complex projects. This advancement signifies a major leap in AI's ability to understand and execute intricate coding challenges. For example, it achieved state-of-the-art results on the SWEBench verified evaluation, surpassing previous models by almost 20 percentage points.</p>
+                        <div class="key-point"><div class="kp-label">💡 Key Point</div><p>Claude 4.5: Coding's new champion.</p></div>
+                    </div>
+                </div>
+                <div class="itab-section">
+                    <div class="itab-header" onclick="toggle(this)">
+                        <div class="itab-title">
+                            <span class="itab-num">2</span>
+                            <span class="itab-name">Long Horizon Tasks: AI's Next Frontier</span>
+                            <span class="itab-badge">Why It Matters</span>
+                            <button class="timestamp-btn" onclick="event.stopPropagation(); jumpToTime(146)">▶ 00:02:26</button>
+                        </div>
+                        <button class="i-btn">i</button>
+                    </div>
+                    <div class="itab-content">
+                        <p>Long horizon tasks, which require AI to think and act autonomously over extended periods, are the next major area of AI development. As AI models ace traditional benchmarks, the ability to handle these longer tasks becomes crucial for measuring true progress. The time AI can spend on a task is doubling every 7 months, faster than Moore's Law. This means AI can tackle increasingly complex problems independently.</p>
+                        <div class="key-point"><div class="kp-label">💡 Key Point</div><p>AI's thinking time is rapidly growing.</p></div>
+                    </div>
+                </div>
+                <div class="itab-section">
+                    <div class="itab-header" onclick="toggle(this)">
+                        <div class="itab-title">
+                            <span class="itab-num">3</span>
+                            <span class="itab-name">Task Efficiency: Intelligence Per Watt</span>
+                            <span class="itab-badge">Concept</span>
+                            <button class="timestamp-btn" onclick="event.stopPropagation(); jumpToTime(204)">▶ 00:03:24</button>
+                        </div>
+                        <button class="i-btn">i</button>
+                    </div>
+                    <div class="itab-content">
+                        <p>Task efficiency measures how well an AI uses its resources, especially token usage and energy consumption, to complete tasks. It's not just about how long an AI can think, but how efficiently it uses that time. The goal is to achieve the most with the least amount of resources, often measured as intelligence per watt. This is becoming increasingly important as AI models consume more energy.</p>
+                        <div class="key-point"><div class="kp-label">💡 Key Point</div><p>Efficiency matters: Intelligence per watt.</p></div>
+                    </div>
+                </div>
+                <div class="itab-section">
+                    <div class="itab-header" onclick="toggle(this)">
+                        <div class="itab-title">
+                            <span class="itab-num">4</span>
+                            <span class="itab-name">Agentic Future: AI-Generated Apps</span>
+                            <span class="itab-badge">Why It Matters</span>
+                            <button class="timestamp-btn" onclick="event.stopPropagation(); jumpToTime(455)">▶ 00:07:35</button>
+                        </div>
+                        <button class="i-btn">i</button>
+                    </div>
+                    <div class="itab-content">
+                        <p>The future of software is moving towards agentic systems, where AI can generate applications on the fly based on user needs. Imagine a desktop where you can create custom apps instantly with just a text prompt. Claude Sonnet 4.5 offers a glimpse into this future with its ability to build functional applications like email clients, calculators, and to-do lists in real-time.</p>
+                        <div class="key-point"><div class="kp-label">💡 Key Point</div><p>Say goodbye to SaaS, hello AI apps.</p></div>
+                    </div>
+                </div>
+                <div class="itab-section">
+                    <div class="itab-header" onclick="toggle(this)">
+                        <div class="itab-title">
+                            <span class="itab-num">5</span>
+                            <span class="itab-name">Real-Time App Generation: Example</span>
+                            <span class="itab-badge">Example</span>
+                            <button class="timestamp-btn" onclick="event.stopPropagation(); jumpToTime(3600)">▶ 01:00:00</button>
+                        </div>
+                        <button class="i-btn">i</button>
+                    </div>
+                    <div class="itab-content">
+                        <p>Claude's "Imagine" demo shows how you can type a request like "Build me a calculator app" and it will generate a working calculator within seconds. Each interaction, like clicking a number, is generated on the fly. While still a bit slow, this demonstrates the potential for AI to create personalized software experiences instantly.</p>
+                        <div class="key-point"><div class="kp-label">💡 Key Point</div><p>AI creates apps as you use them.</p></div>
+                    </div>
+                </div>
+                <div class="itab-section">
+                    <div class="itab-header" onclick="toggle(this)">
+                        <div class="itab-title">
+                            <span class="itab-num">6</span>
+                            <span class="itab-name">Claude 4.5: Current Pricing</span>
+                            <span class="itab-badge">Action Step</span>
+                            <button class="timestamp-btn" onclick="event.stopPropagation(); jumpToTime(4480)">▶ 01:14:40</button>
+                        </div>
+                        <button class="i-btn">i</button>
+                    </div>
+                    <div class="itab-content">
+                        <p>You can start using Claude Sonnet 4.5 today. The pricing is the same as Sonnet 4: $3 per million input tokens and $15 per million output tokens. Anthropic recommends upgrading to 4.5 for all use cases due to its improved performance. This makes it accessible for developers looking to leverage the latest advancements in AI coding.</p>
+                        <div class="key-point"><div class="kp-label">💡 Key Point</div><p>Upgrade now: Same price, better coding.</p></div>
+                    </div>
+                </div>
+        
+        
+        
+        <footer>
+            Created with <a href="https://itabs.ai">iTabs</a> • Tap to learn, scroll to act
+        </footer>
+    </div>
+    
+    <script>
+        function toggle(h) {
+            h.nextElementSibling.classList.toggle('show');
+            h.querySelector('.i-btn').classList.toggle('active');
+        }
+        
+        function jumpToTime(seconds) {
+            var iframe = document.getElementById('ytPlayer');
+            if (iframe) {
+                var baseUrl = iframe.src.split('?')[0];
+                iframe.src = baseUrl + '?rel=0&modestbranding=1&start=' + seconds + '&autoplay=1';
+                window.scrollTo({top: 0, behavior: 'smooth'});
+            }
+        }
+        
+        // Auto-open first section
+        document.querySelector('.itab-header')?.click();
+    </script>
+</body>
+</html>
